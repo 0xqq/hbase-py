@@ -301,6 +301,7 @@ service Hbase {
    * @return value for specified row/column
    */
   list<TCell> get(
+    /** v1 */
     /** name of table */
     1:Text tableName,
 
@@ -322,6 +323,7 @@ service Hbase {
    */
   list<TCell> getVer(
     /** name of table */
+    /** v1 */
     1:Text tableName,
 
     /** row key */
@@ -346,6 +348,7 @@ service Hbase {
    */
   list<TCell> getVerTs(
     /** name of table */
+    /** v1 */
     1:Text tableName,
 
     /** row key */
@@ -388,6 +391,7 @@ service Hbase {
    * @return TRowResult containing the row and map of columns to TCells
    */
   list<TRowResult> getRowWithColumns(
+    /** v1 */
     /** name of table */
     1:Text tableName,
 
@@ -428,6 +432,7 @@ service Hbase {
    * @return TRowResult containing the row and map of columns to TCells
    */
   list<TRowResult> getRowWithColumnsTs(
+    /** v1 */
     /** name of table */
     1:Text tableName,
 
@@ -466,6 +471,7 @@ service Hbase {
    * @return TRowResult containing the rows and map of columns to TCells
    */
   list<TRowResult> getRowsWithColumns(
+    /** v1 */
     /** name of table */
     1:Text tableName,
 
@@ -506,6 +512,7 @@ service Hbase {
    * @return TRowResult containing the rows and map of columns to TCells
    */
   list<TRowResult> getRowsWithColumnsTs(
+    /** v1 */
     /** name of table */
     1:Text tableName,
 

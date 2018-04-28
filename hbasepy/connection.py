@@ -10,6 +10,7 @@ from thriftpy.protocol import TBinaryProtocol
 from thriftpy.thrift import TClient
 from thriftpy.transport import TSocket, TBufferedTransport
 from hbasepy.load import hbase_thrift
+from hbasepy.tables import Table
 
 logger = logging.getLogger(__name__)
 
@@ -55,7 +56,7 @@ class Connection:
 
     # ############## todo: 分割出下面方法
     def table(self, name):
-        raise NotImplementedError
+        return Table(name, self)
 
     def tables(self):
         """
@@ -144,31 +145,3 @@ class Connection:
             return self.client.majorCompact(table_name_or_region_name)
         return self.client.compact(table_name_or_region_name)
 
-    def get_column_descriptors(self, table_name):
-        """
-        :param table_name:
-        :return:
-        :rtype: dict
-
-
-        {'cf1:': ColumnDescriptor(name='cf1:', maxVersions=10, compression='NONE', inMemory=False,
-                    bloomFilterType='NONE', bloomFilterVectorSize=0, bloomFilterNbHashes=0,
-                    blockCacheEnabled=False, timeToLive=2147483647),
-         'cf2:': ColumnDescriptor(name='cf2:', maxVersions=2, compression='NONE', inMemory=False,
-                    bloomFilterType='NONE', bloomFilterVectorSize=0, bloomFilterNbHashes=0,
-                    blockCacheEnabled=False, timeToLive=2147483647)}
-        """
-        return self.client.getColumnDescriptors(table_name)
-
-    def get_table_regions(self, table_name):
-        """
-        [
-        TRegionInfo(startKey='', endKey='', id=1524734540419,
-                    name='tables1,,1524734540419.28f9de6fc7e5dd90d3cd06c40c606726.',
-                    version=1, serverName='60808495b152', port=46275)
-          ]
-        :param table_name:
-        :return:
-        :rtype: list
-        """
-        return self.client.getTableRegions(table_name)

@@ -7,6 +7,8 @@ __author__ = "zhangyu"
 
 from unittest import TestCase
 
+import time
+
 from hbasepy import Connection, column_descriptor
 from hbasepy.load import hbase_thrift
 from tests.config import ip
@@ -50,14 +52,30 @@ class TestTable(TestCase):
         self.connection.create_table("tables1", column_families=[
             column_descriptor("cf1", max_versions=10),
             column_descriptor("cf2:", max_versions=2)])
-        res = self.connection.get_column_descriptors("tables1")
+        res = self.connection.table("tables1").families()
+
+        for family, descriptor in res.items():
+            if family == "cf1:":
+                self.assertEqual(descriptor.name, "cf1:")
+                self.assertEqual(descriptor.maxVersions, 10)
+            elif family == "cf2:":
+                self.assertEqual(descriptor.name, "cf2:")
+                self.assertEqual(descriptor.maxVersions, 2)
 
     def test_get_table_regions(self):
         self.connection.create_table("tables1", column_families=[
             column_descriptor("cf1", max_versions=10),
             column_descriptor("cf2:", max_versions=2)])
-        res = self.connection.get_table_regions("tables1")
-        print(res)
+        self.connection.table("tables1").regions()
+
+    def test_row_with_timestamp(self):
+        now = int(time.time())
+        self.connection.create_table("tables1", column_families=[
+            column_descriptor("cf1", max_versions=10),
+            column_descriptor("cf2:", max_versions=2)])
+
+        resp = self.connection.table("tables1").row("cf1:", [], None, now)
+        print(resp)
 
     def tearDown(self):
         self.connection.close()
